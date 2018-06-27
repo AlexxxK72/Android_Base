@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Погода</string>
+    <string name="country">Moscow</string>
+    <string name="create_action">Create_action</string>
 </resources>
