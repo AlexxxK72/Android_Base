@@ -43,16 +43,12 @@ public class BaseActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         fab = findViewById(R.id.fab);
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startNewActivity();
             }
         });
-
-        ViewGroup container = findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.weather_layout, container);
     }
 
     private void startNewActivity() {

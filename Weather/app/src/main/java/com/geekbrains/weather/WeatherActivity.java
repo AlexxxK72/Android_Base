@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,6 +27,9 @@ public class WeatherActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ViewGroup container = findViewById(R.id.content_frame);
+        getLayoutInflater().inflate(R.layout.weather_layout, container);
 
         txtName = findViewById(R.id.city_name);
         checkHumidity = findViewById(R.id.city_humidity);
