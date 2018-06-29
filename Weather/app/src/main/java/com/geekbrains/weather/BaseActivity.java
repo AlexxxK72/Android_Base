@@ -26,9 +26,6 @@ public class BaseActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
-        ViewGroup container = findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.weather_layout, container);
-
         initLayout();
     }
 
@@ -53,6 +50,9 @@ public class BaseActivity extends AppCompatActivity
                 startNewActivity();
             }
         });
+
+        ViewGroup container = findViewById(R.id.content_frame);
+        getLayoutInflater().inflate(R.layout.weather_layout, container);
     }
 
     private void startNewActivity() {
