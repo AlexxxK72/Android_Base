@@ -6,42 +6,57 @@
     android:layout_height="match_parent"
     tools:context="com.geekbrains.weather.WeatherActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/rl"
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:background="@color/blue">
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:background="@color/blue"
+            android:gravity="bottom"
+            android:paddingBottom="@dimen/default_padding"
+            android:paddingLeft="@dimen/default_padding"
+            android:paddingStart="@dimen/default_padding"
+            android:text="+18°"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="70sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="3">
 
-            <TextView
-                android:id="@+id/tv"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/city_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/default_padding"
-                android:layout_marginStart="@dimen/default_padding"
-                android:layout_marginTop="@dimen/default_padding"
-                android:text="Fullname"
-                android:textStyle="bold" />
+                android:hint="Введите название города" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <CheckBox
+                android:id="@+id/city_humidity"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="@dimen/default_padding"
-                android:layout_marginLeft="@dimen/default_padding"
-                android:layout_marginStart="@dimen/default_padding"
-                android:text="+18"
-                android:textSize="80sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text="Влажность" />
+            <CheckBox
+                android:id="@+id/city_wind_speed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Скорость ветра" />
+            <CheckBox
+                android:id="@+id/city_pressure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Давление" />
 
-        </RelativeLayout>
-
-    </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

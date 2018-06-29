@@ -5,94 +5,64 @@ import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import es.dmoral.toasty.Toasty;
 
 public class WeatherActivity extends BaseActivity {
 
-    private static final String TAG = "WeatherActivity";
-    private static final String TEXT = "TEXT";
-    private TextView textView;
+    private EditText txtName;
+    private CheckBox checkHumidity, checkWindSpeed, checkPressure;
     private FloatingActionButton fab;
-    private Boolean isPressed = false;
+
+    private final String NAME = "name";
+    private final String HUMIDITY = "city_humidity";
+    private final String WIND_SPEED = "wind_speed";
+    private final String PRESSURE = "pressure";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        setContentView(R.layout.weather_main);
-//        String instanceState;
-//        if (savedInstanceState == null) {
-//            instanceState = "Первый запуск";
-//        } else {
-//            instanceState = "Повторный запуск";
-//        }
-//
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
-//
-//        Toasty.success(getApplicationContext(), instanceState + " - onCreate()", Toast.LENGTH_SHORT).show();
-//
-//        textView = findViewById(R.id.tv);
-//        fab = findViewById(R.id.fab);
-//
-//        if (getIntent().getExtras() != null) {
-//            String text = getIntent().getExtras().getString(TEXT);
-//            textView.setText("Добрый день, " + text);
-//        }
-//
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (!isPressed) {
-//                    isPressed = true;
-//                    startNewActivity();
-//                }
-//            }
-//        });
-
-//        Log.d(TAG, "onCreate");
+        txtName = findViewById(R.id.city_name);
+        checkHumidity = findViewById(R.id.city_humidity);
+        checkWindSpeed = findViewById(R.id.city_wind_speed);
+        checkPressure = findViewById(R.id.city_pressure);
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityInfo();
+            }
+        });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "onRestart");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop");
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        isPressed = false;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
+    private void startActivityInfo() {
+        String cityName = txtName.getText().toString();
+        if(!cityName.isEmpty()){
+            Intent intent = new Intent(this, InfoCityActivity.class);
+            intent.putExtra(NAME, cityName);
+            int humidity = (checkHumidity.isChecked())
+                    ? 85
+                    : 0;
+            intent.putExtra(HUMIDITY, humidity);
+            int windSpeed = (checkWindSpeed.isChecked())
+                    ? 10
+                    : 0;
+            intent.putExtra(WIND_SPEED, windSpeed);
+            int pressure = (checkPressure.isChecked())
+                    ? 745
+                    : 0;
+            intent.putExtra(PRESSURE, pressure);
+            startActivity(intent);
+        }
+        else {
+            Toasty
+                    .error(this, getString(R.string.empty_city_name), Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 }

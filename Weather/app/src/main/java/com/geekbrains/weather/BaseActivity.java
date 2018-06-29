@@ -10,9 +10,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 public class BaseActivity extends AppCompatActivity
         implements BaseView.View, NavigationView.OnNavigationItemSelectedListener {
@@ -23,6 +25,9 @@ public class BaseActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+
+        ViewGroup container = findViewById(R.id.content_frame);
+        getLayoutInflater().inflate(R.layout.weather_layout, container);
 
         initLayout();
     }
@@ -51,7 +56,7 @@ public class BaseActivity extends AppCompatActivity
     }
 
     private void startNewActivity() {
-        Intent intent = new Intent(this, CreateActionActivity.class);
+        Intent intent = new Intent(this, InfoCityActivity.class);
         startActivity(intent);
         finish();
     }
