@@ -2,4 +2,12 @@
     <string name="app_name">Погода</string>
     <string name="country">Moscow</string>
     <string name="create_action">Create_action</string>
+    <string name="empty_city_name">Заполните поле город</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 </resources>
