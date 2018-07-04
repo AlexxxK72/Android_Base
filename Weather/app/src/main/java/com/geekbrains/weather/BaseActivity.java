@@ -1,31 +1,35 @@
 package com.geekbrains.weather;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+
+
 
 public class BaseActivity extends AppCompatActivity
-        implements BaseView.View, NavigationView.OnNavigationItemSelectedListener {
+        implements BaseView.View, BaseFragment.Callback, NavigationView.OnNavigationItemSelectedListener {
 
-    private FloatingActionButton fab;
+//    private FloatingActionButton fab;
+    private final String TAG = "BaseActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-
+        Log.d(TAG, "onCreate: ");
         initLayout();
     }
 
@@ -42,20 +46,28 @@ public class BaseActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startNewActivity();
-            }
-        });
+        addFragment(new WeatherFragment(), R.id.content_frame);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            startInfoCityFragment(getResources().getString(R.string.country), 0, 0,0);
     }
 
-    private void startNewActivity() {
-        Intent intent = new Intent(this, InfoCityActivity.class);
-        startActivity(intent);
-        finish();
+    private void addFragment(Fragment fragment, int idContainer){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(idContainer, fragment)
+                .commit();
     }
+
+    public void startInfoCityFragment(String name, int cityHumidity, int  windSpeed, int pressure){
+        Fragment infoCityFragment = InfoCityFragment.newInstance(name, cityHumidity, windSpeed, pressure);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            addFragment(infoCityFragment, R.id.content_frame);
+        }
+        else{
+            addFragment(infoCityFragment, R.id.content_frame_info_city);
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -114,5 +126,51 @@ public class BaseActivity extends AppCompatActivity
     @Override
     public void initDrawer(String username, Bitmap profileImage) {
 
+    }
+
+    @Override
+    public void onFragmentAttached() {
+
+    }
+
+    @Override
+    public void onFragmentDetached(String tag) {
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: ");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart: ");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: ");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
     }
 }

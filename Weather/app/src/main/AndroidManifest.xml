@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".WeatherActivity"
+            android:name=".BaseActivity"
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,13 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".InfoCityActivity"
-            android:theme="@style/NoActionBar" />
-        <!--<activity-->
-        <!--android:name=".BaseActivity"-->
-        <!--android:label="@string/title_activity_base"-->
-        <!--android:theme="@style/AppTheme.NoActionBar" />-->
     </application>
 
 </manifest>
