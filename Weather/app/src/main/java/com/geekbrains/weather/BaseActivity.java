@@ -20,7 +20,7 @@ import android.view.View;
 
 
 public class BaseActivity extends AppCompatActivity
-        implements BaseView.View, BaseFragment.Callback, NavigationView.OnNavigationItemSelectedListener {
+        implements BaseView.View, WeatherFragment.CallBackWF, BaseFragment.Callback, NavigationView.OnNavigationItemSelectedListener {
 
 //    private FloatingActionButton fab;
     private final String TAG = "BaseActivity";
@@ -66,6 +66,11 @@ public class BaseActivity extends AppCompatActivity
         else{
             addFragment(infoCityFragment, R.id.content_frame_info_city);
         }
+    }
+
+    @Override
+    public void fab_send_onClick() {
+        addFragment(new SendFragment(), R.id.content_frame);
     }
 
 

@@ -1,7 +1,6 @@
 package com.geekbrains.weather;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -20,15 +19,19 @@ public class WeatherFragment extends BaseFragment {
 
     private EditText txtName;
     private CheckBox checkHumidity, checkWindSpeed, checkPressure;
-    private FloatingActionButton fab;
+    private FloatingActionButton fab, fab_send;
     private final String  TAG = "WeatherFragment";
+    private CallBackWF mBackWF;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
-        return inflater.inflate(R.layout.weather_layout, container, false);
+        View view = inflater.inflate(R.layout.weather_layout, container, false);
+        fab_send = view.findViewById(R.id.fab_send);
+        mBackWF = (CallBackWF) getActivity();
+        return view;
     }
 
     @Override
@@ -42,6 +45,12 @@ public class WeatherFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 startActivityInfo();
+            }
+        });
+        fab_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBackWF.fab_send_onClick();
             }
         });
 
@@ -66,6 +75,10 @@ public class WeatherFragment extends BaseFragment {
                     .error(getBaseActivity(), getString(R.string.empty_city_name), Toast.LENGTH_SHORT)
                     .show();
         }
+    }
+
+    public interface CallBackWF {
+        void fab_send_onClick();
     }
 
     @Override

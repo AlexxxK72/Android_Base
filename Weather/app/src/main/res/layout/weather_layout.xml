@@ -7,6 +7,7 @@
     tools:context="com.geekbrains.weather.WeatherFragment">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/grey"
@@ -26,26 +27,26 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/country"
-            android:visibility="gone"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:textColor="@android:color/white"
             android:gravity="center"
             android:text="+18°"
             android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="70sp"
-             />
+            android:textColor="@android:color/white"
+            android:textSize="70sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="3"
             android:background="@android:color/white"
-            android:orientation="vertical"
-            android:layout_weight="3">
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/city_name"
@@ -58,11 +59,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Влажность" />
+
             <CheckBox
                 android:id="@+id/city_wind_speed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Скорость ветра" />
+
             <CheckBox
                 android:id="@+id/city_pressure"
                 android:layout_width="match_parent"
@@ -71,5 +74,15 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="72dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_menu_send"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout" />
 
 </android.support.constraint.ConstraintLayout>
