@@ -1,6 +1,5 @@
 package com.geekbrains.weather;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -12,24 +11,26 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 
-
 public class BaseActivity extends AppCompatActivity
-        implements BaseView.View, WeatherFragment.CallBackWF, BaseFragment.Callback, NavigationView.OnNavigationItemSelectedListener {
+        implements
+        BaseView.View,
+        WeatherFragment.CallBackWF,
+        InfoCityFragment.CallBackICF,
+        HistoryFragment.CallBackHF,
+        BaseFragment.Callback,
+        NavigationView.OnNavigationItemSelectedListener {
 
-//    private FloatingActionButton fab;
-    private final String TAG = "BaseActivity";
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        Log.d(TAG, "onCreate: ");
         initLayout();
     }
 
@@ -46,9 +47,18 @@ public class BaseActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        addFragment(new WeatherFragment(), R.id.content_frame);
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addInfoCityFragment();
+            }
+        });
+        Fragment weatFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+        if(weatFragment == null)
+            addFragment(new WeatherFragment(), R.id.content_frame);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-            startInfoCityFragment(getResources().getString(R.string.country), 0, 0,0);
+            addInfoCityFragment();
     }
 
     private void addFragment(Fragment fragment, int idContainer){
@@ -58,8 +68,8 @@ public class BaseActivity extends AppCompatActivity
                 .commit();
     }
 
-    public void startInfoCityFragment(String name, int cityHumidity, int  windSpeed, int pressure){
-        Fragment infoCityFragment = InfoCityFragment.newInstance(name, cityHumidity, windSpeed, pressure);
+    public void addInfoCityFragment(){
+        Fragment infoCityFragment = new InfoCityFragment();
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             addFragment(infoCityFragment, R.id.content_frame);
         }
@@ -69,8 +79,30 @@ public class BaseActivity extends AppCompatActivity
     }
 
     @Override
-    public void fab_send_onClick() {
-        addFragment(new SendFragment(), R.id.content_frame);
+    public void fab_history_onClick() {
+        Fragment wFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+        if(wFragment instanceof WeatherFragment){
+            String cityName = ((WeatherFragment)wFragment).getCityName();
+            if(cityName != null){
+                cityName = cityName.split(",")[0];
+                HistoryFragment hFragment = HistoryFragment.newInstance(cityName);
+                addFragment(hFragment, R.id.content_frame);
+            }
+        }
+    }
+
+    @Override
+    public void fab_confirm_onclick(String cityName, Boolean isHumidity, Boolean isWindSpeed, Boolean pressure) {
+
+        // добавить код для userName
+        Fragment weatherFragment = WeatherFragment.newInstance(cityName, isHumidity, isWindSpeed, pressure);
+        addFragment(weatherFragment, R.id.content_frame);
+    }
+
+    @Override
+    public void fab_back_onClick() {
+        Fragment weatherFragment = new WeatherFragment();
+        addFragment(weatherFragment, R.id.content_frame);
     }
 
 
@@ -109,13 +141,10 @@ public class BaseActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_settings) {
-            // Handle the camera action
         } else if (id == R.id.nav_info) {
-            // Handle the camera action
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -141,41 +170,5 @@ public class BaseActivity extends AppCompatActivity
     @Override
     public void onFragmentDetached(String tag) {
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart: ");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume: ");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "onRestart: ");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause: ");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop: ");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: ");
     }
 }

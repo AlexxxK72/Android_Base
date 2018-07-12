@@ -16,6 +16,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Toasty.Config.getInstance().setSuccessColor(getResources().getColor(R.color.blue)).apply();
+        //Toasty.Config.getInstance().setSuccessColor(getResources().getColor(R.color.blue)).apply();
     }
 }

@@ -1,52 +1,46 @@
 package com.geekbrains.weather;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Switch;
+import android.widget.Toast;
 
-/**
- * Created by shkryaba on 24/06/2018.
- */
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class InfoCityFragment extends BaseFragment {
+import es.dmoral.toasty.Toasty;
 
-    private static final String NAME = "name";
-    private static final String HUMIDITY = "city_humidity";
-    private static final String WIND_SPEED = "wind_speed";
-    private static final String PRESSURE = "pressure";
 
-    private String name;
-    private int humidity;
-    private int windSpeed;
-    private int pressure;
+public class InfoCityFragment extends BaseFragment implements RecyclerViewAdapter.OnClickCityListener{
 
-    TextView txtInfo;
+    private CallBackICF mBackICF;
+    private EditText txtCityName;
+    private Switch swHumidity, swWindSpeed, swPressure;
+    private FloatingActionButton btnConfirm;
+    private RecyclerView mRecyclerView;
+    private List<String> cityList;
 
-    public static InfoCityFragment newInstance(String name, int cityHumidity, int  windSpeed, int pressure) {
 
-        Bundle args = new Bundle();
-        args.putString(NAME, name);
-        args.putInt(HUMIDITY, cityHumidity);
-        args.putInt(WIND_SPEED, windSpeed);
-        args.putInt(PRESSURE, pressure);
-        InfoCityFragment fragment = new InfoCityFragment();
-        fragment.setArguments(args);
-        return fragment;
+    public interface CallBackICF{
+        void fab_confirm_onclick(String cityName, Boolean humidity, Boolean windSpeed, Boolean pressure);
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if(getArguments() != null){
-            name = getArguments().getString(NAME, null);
-            humidity = getArguments().getInt(HUMIDITY, 0);
-            windSpeed = getArguments().getInt(WIND_SPEED, 0);
-            pressure = getArguments().getInt(PRESSURE, 0);
-        }
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mBackICF = getBaseActivity();
     }
 
     @Nullable
@@ -57,15 +51,49 @@ public class InfoCityFragment extends BaseFragment {
 
     @Override
     protected void initLayout(View view, Bundle savedInstanceState) {
-        txtInfo = view.findViewById(R.id.city_info);
-        writeCityInfo();
+        initCountryList();
+        mRecyclerView = view.findViewById(R.id.recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), this, cityList);
+        mRecyclerView.setAdapter(adapter);
+
+        txtCityName = view.findViewById(R.id.city_name);
+        swHumidity = view.findViewById(R.id.city_humidity);
+        swWindSpeed = view.findViewById(R.id.city_wind_speed);
+        swPressure = view.findViewById(R.id.city_pressure);
+        btnConfirm = view.findViewById(R.id.btn_confirm);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String cityName = txtCityName.getText().toString();
+                if(!cityName.isEmpty()){
+
+                    mBackICF.fab_confirm_onclick(cityName, swHumidity.isChecked(), swWindSpeed.isChecked(), swPressure.isChecked());
+                }
+                else {
+                    Toasty
+                            .error(getBaseActivity(), getString(R.string.empty_city_name), Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        });
     }
 
-    private void writeCityInfo() {
-        String cityInfo = name + "\n";
-        if (humidity != 0) cityInfo += "Влажность: " + humidity + " %\n";
-        if (windSpeed != 0) cityInfo += "Скорость ветра: " + windSpeed + " м/с\n";
-        if (pressure != 0) cityInfo += "Давление: " + pressure + " мм.рт.ст.\n";
-        txtInfo.setText(cityInfo);
+    @Override
+    public void onClickCity(List<String> cityList) {
+        String cities = "";
+        for (String item : cityList){
+           cities += item + ", ";
+        }
+        cities = cities.substring(0, cities.length() - 2);
+        txtCityName.setText(cities);
+    }
+
+    private void initCountryList() {
+        cityList = Arrays.asList(getResources().getStringArray(R.array.cities));
     }
 }
