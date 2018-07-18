@@ -2,6 +2,7 @@ package com.geekbrains.weather;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,19 +43,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull final CityHolder cityHolder, int position) {
         cityHolder.txtCityName.setText(cityList.get(position));
-        cityHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        cityHolder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 for (String item : selectedList){
                     if(item.equals(cityHolder.txtCityName.getText())){
-                        cityHolder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.grey));
+                        cityHolder.mCardView.setBackgroundColor(mContext.getResources().getColor(R.color.grey));
+                        cityHolder.mCardView.setRadius(10.0f);
+                        cityHolder.mCardView.setCardElevation(5.0f);
+                        cityHolder.mCardView.setUseCompatPadding(true);
                         cityHolder.txtCityName.setTextColor(mContext.getResources().getColor(R.color.colorPrimaryDark));
                         selectedList.remove(item);
                         mListener.onClickCity(selectedList);
                         return;
                     }
                 }
-                cityHolder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimaryDark));
+                cityHolder.mCardView.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimaryDark));
+                cityHolder.mCardView.setRadius(10.0f);
+                cityHolder.mCardView.setCardElevation(5.0f);
+                cityHolder.mCardView.setUseCompatPadding(true);
                 cityHolder.txtCityName.setTextColor(mContext.getResources().getColor(R.color.grey));
                 selectedList.add(cityHolder.txtCityName.getText().toString());
                 mListener.onClickCity(selectedList);
@@ -69,10 +76,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class CityHolder extends RecyclerView.ViewHolder{
 
+        private CardView mCardView;
         private TextView txtCityName;
 
         public CityHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item, parent, false));
+
+            mCardView = itemView.findViewById(R.id.item_card_view);
             txtCityName = itemView.findViewById(R.id.textview_item);
         }
     }

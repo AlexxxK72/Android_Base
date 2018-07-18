@@ -13,7 +13,6 @@
         android:layout_gravity="bottom"
         app:backgroundTint="@color/colorPrimaryDark"
         app:fabAttached="true"
-        app:fabCradleDiameter="70dp"
         app:fabCradleRoundedCornerRadius="10dp"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
