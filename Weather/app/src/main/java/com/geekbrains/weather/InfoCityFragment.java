@@ -40,7 +40,7 @@ public class InfoCityFragment extends BaseFragment implements RecyclerViewAdapte
 
 
     public interface CallBackICF{
-        void fab_confirm_onclick(String cityName, Boolean humidity, Boolean windSpeed, Boolean pressure);
+        void fab_confirm_onclick(String cityName, boolean humidity, boolean windSpeed, boolean pressure);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class InfoCityFragment extends BaseFragment implements RecyclerViewAdapte
     @Override
     protected void initLayout(final View view, Bundle savedInstanceState) {
         initCountryList();
-        mPattern = Pattern.compile("[a-zA-Z,\\s]+");
+        mPattern = Pattern.compile("[-a-zA-Z,\\s\\.]+");
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
 

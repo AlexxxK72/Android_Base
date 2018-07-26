@@ -1,10 +1,18 @@
 package com.geekbrains.weather;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -26,6 +34,7 @@ public class BaseActivity extends AppCompatActivity
         NavigationView.OnNavigationItemSelectedListener {
 
     private FloatingActionButton fab;
+    private static final int PERMISSION_REQUEST_CODE = 111;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,25 +64,24 @@ public class BaseActivity extends AppCompatActivity
             }
         });
         Fragment weatFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
-        if(weatFragment == null)
+        if (weatFragment == null)
             addFragment(new WeatherFragment(), R.id.content_frame);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             addInfoCityFragment();
     }
 
-    private void addFragment(Fragment fragment, int idContainer){
+    private void addFragment(Fragment fragment, int idContainer) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(idContainer, fragment)
                 .commit();
     }
 
-    public void addInfoCityFragment(){
+    public void addInfoCityFragment() {
         Fragment infoCityFragment = new InfoCityFragment();
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             addFragment(infoCityFragment, R.id.content_frame);
-        }
-        else{
+        } else {
             addFragment(infoCityFragment, R.id.content_frame_info_city);
         }
     }
@@ -81,9 +89,9 @@ public class BaseActivity extends AppCompatActivity
     @Override
     public void fab_history_onClick() {
         Fragment wFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
-        if(wFragment instanceof WeatherFragment){
-            String cityName = ((WeatherFragment)wFragment).getCityName();
-            if(cityName != null){
+        if (wFragment instanceof WeatherFragment) {
+            String cityName = ((WeatherFragment) wFragment).getCityName();
+            if (cityName != null) {
                 cityName = cityName.split(",")[0];
                 HistoryFragment hFragment = HistoryFragment.newInstance(cityName);
                 addFragment(hFragment, R.id.content_frame);
@@ -92,7 +100,7 @@ public class BaseActivity extends AppCompatActivity
     }
 
     @Override
-    public void fab_confirm_onclick(String cityName, Boolean isHumidity, Boolean isWindSpeed, Boolean pressure) {
+    public void fab_confirm_onclick(String cityName, boolean isHumidity, boolean isWindSpeed, boolean pressure) {
 
         // добавить код для userName
         Fragment weatherFragment = WeatherFragment.newInstance(cityName, isHumidity, isWindSpeed, pressure);
@@ -125,17 +133,47 @@ public class BaseActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_info:
+                Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "+712345678"));
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                    startActivity(dialIntent);
+                } else {
+                    requestForCallPerm();
+                }
+                return true;
+            case R.id.action_settings:
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void requestForCallPerm() {
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CALL_PHONE)) {
+            ActivityCompat.requestPermissions(this, new String[]
+                    {Manifest.permission.CALL_PHONE}, PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "+712345678"));
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    startActivity(intent);
+                }
+            }
+        }
+        if(requestCode == WeatherFragment.PERMISSION_REQUEST_CODE){
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+            if (fragment instanceof WeatherFragment) {
+                fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

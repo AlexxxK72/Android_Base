@@ -35,25 +35,28 @@
                 android:textColor="@color/colorPrimary"
                 android:layout_below="@+id/ivWeather"
                 android:gravity="center"
-                android:text="@string/country"
+                tools:text="@string/country"
                 android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/tv_humidity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                tools:text="85%"
                 android:textColor="@color/colorPrimary"
                 android:gravity="center"/>
             <TextView
                 android:id="@+id/tv_wind_speed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                tools:text="85 м/с"
                 android:textColor="@color/colorPrimary"
                 android:gravity="center"/>
             <TextView
                 android:id="@+id/tv_pressure"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                tools:text="745 мм.рт.ст."
                 android:textColor="@color/colorPrimary"
                 android:gravity="center"/>
 
@@ -61,10 +64,11 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_temperature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="+18°"
+        tools:text="+18°"
         android:layout_below="@+id/ll_params"
         android:textColor="@color/colorPrimary"
         android:textAppearance="@style/TextAppearance.AppCompat"

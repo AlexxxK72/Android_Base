@@ -48,20 +48,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onClick(View view) {
                 for (String item : selectedList){
                     if(item.equals(cityHolder.txtCityName.getText())){
-                        cityHolder.mCardView.setBackgroundColor(mContext.getResources().getColor(R.color.grey));
-                        cityHolder.mCardView.setRadius(10.0f);
-                        cityHolder.mCardView.setCardElevation(5.0f);
-                        cityHolder.mCardView.setUseCompatPadding(true);
+                        cityHolder.mCardView.setCardBackgroundColor(mContext.getResources().getColor(R.color.grey));
                         cityHolder.txtCityName.setTextColor(mContext.getResources().getColor(R.color.colorPrimaryDark));
                         selectedList.remove(item);
                         mListener.onClickCity(selectedList);
                         return;
                     }
                 }
-                cityHolder.mCardView.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimaryDark));
-                cityHolder.mCardView.setRadius(10.0f);
-                cityHolder.mCardView.setCardElevation(5.0f);
-                cityHolder.mCardView.setUseCompatPadding(true);
+                cityHolder.mCardView.setCardBackgroundColor(mContext.getResources().getColor(R.color.colorPrimaryDark));
                 cityHolder.txtCityName.setTextColor(mContext.getResources().getColor(R.color.grey));
                 selectedList.add(cityHolder.txtCityName.getText().toString());
                 mListener.onClickCity(selectedList);
