@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import es.dmoral.toasty.Toasty;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private EditText txtName;
     private CheckBox checkHumidity, checkWindSpeed, checkPressure;
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
         txtName = findViewById(R.id.city_name);
         checkHumidity = findViewById(R.id.city_humidity);
         checkWindSpeed = findViewById(R.id.city_wind_speed);

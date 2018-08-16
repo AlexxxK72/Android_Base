@@ -9,6 +9,14 @@
             android:icon="@drawable/ic_settings_24dp"
             android:title="@string/settings" />
         <item
+            android:id="@+id/nav_web"
+            android:icon="@drawable/ic_web_24dp"
+            android:title="@string/web_gismeteo" />
+        <item
+            android:id="@+id/nav_note"
+            android:icon="@drawable/ic_event_note_24dp"
+            android:title="@string/note" />
+        <item
             android:id="@+id/nav_info"
             android:icon="@drawable/ic_info_outline_24dp"
             android:title="@string/about" />
